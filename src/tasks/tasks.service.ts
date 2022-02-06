@@ -1,3 +1,4 @@
+import { CreateTaskDto } from './dto/create-task.dto';
 import { taskModel, TaskStatus } from './tasks.model';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
@@ -10,7 +11,8 @@ export class TasksService {
     return this.tasks;
   }
 
-  createSingleTask(title: string, description: string): taskModel {
+  createSingleTask(createTaskDto: CreateTaskDto): taskModel {
+    const { title, description } = createTaskDto; //ECMA 6 destructuring syntax
     const task: taskModel = {
       id: uuid(),
       title,
