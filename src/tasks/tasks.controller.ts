@@ -9,16 +9,41 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
-  @Get('all')
-  getTasks(): taskModel[] {
-    return this.tasksService.getAllTasks();
+  @Get()
+  getTasks(@Query() filterDto: GetTasksFilterDto): taskModel[] {
+    //if we have filters defined get tasks with filter otherwise return all of them
+    if (Object.keys(filterDto).length) {
+      return this.tasksService.getTasksWithFilters(filterDto);
+    } else {
+      return this.tasksService.getAllTasks();
+    }
   }
+
+  // getTasksWithFilters(filterDto: GetTasksFilterDto): taskModel[] {
+  //   const { status, search } = filterDto;
+  //   let tasks = this.getTasks();
+  //   if (status) {
+  //     tasks = tasks.filter((task) => task.status === status);
+  //   }
+  //   if (search) {
+  //     tasks = tasks.filter((task) => {
+  //       if (task.title.includes(search) || task.description.includes(search))
+  //         return true;
+
+  //       return false;
+  //     });
+
+  //     return tasks;
+  //   }
+  // }
 
   @Get('/:id') //colon signifiesits a path parameter
   getTaskById(@Param('id') id: string): taskModel {

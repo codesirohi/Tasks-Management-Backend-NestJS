@@ -2,6 +2,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { taskModel, TaskStatus } from './tasks.model';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 @Injectable() // injectable makes it a signleton (design pattern)
 export class TasksService {
@@ -9,6 +10,24 @@ export class TasksService {
 
   getAllTasks(): taskModel[] {
     return this.tasks;
+  }
+
+  getTasksWithFilters(filterDto: GetTasksFilterDto): taskModel[] {
+    const { status, search } = filterDto; //Destructuring the Data type object
+    let tasks = this.getAllTasks();
+    if (status) {
+      tasks = tasks.filter((task) => task.status === status);
+    }
+    if (search) {
+      tasks = tasks.filter((task) => {
+        if (task.title.includes(search) || task.description.includes(search))
+          return true;
+
+        return false;
+      });
+
+      return tasks;
+    }
   }
 
   createSingleTask(createTaskDto: CreateTaskDto): taskModel {
