@@ -27,24 +27,6 @@ export class TasksController {
     }
   }
 
-  // getTasksWithFilters(filterDto: GetTasksFilterDto): taskModel[] {
-  //   const { status, search } = filterDto;
-  //   let tasks = this.getTasks();
-  //   if (status) {
-  //     tasks = tasks.filter((task) => task.status === status);
-  //   }
-  //   if (search) {
-  //     tasks = tasks.filter((task) => {
-  //       if (task.title.includes(search) || task.description.includes(search))
-  //         return true;
-
-  //       return false;
-  //     });
-
-  //     return tasks;
-  //   }
-  // }
-
   @Get('/:id') //colon signifiesits a path parameter
   getTaskById(@Param('id') id: string): taskModel {
     return this.tasksService.getTaskById(id);
