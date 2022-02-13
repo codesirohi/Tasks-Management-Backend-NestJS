@@ -1,3 +1,4 @@
+import { Task } from './task.entity';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TasksService } from './tasks.service';
@@ -26,7 +27,11 @@ export class TasksController {
   //     return this.tasksService.getAllTasks();
   //   }
   // }
-
+  @Get('/:id')
+  getTaskById(@Param('id') id: string): Promise<Task> {
+    //any async returns promise
+    return this.tasksService.getTaskById(id);
+  }
   // @Get('/:id') //colon signifiesits a path parameter
   // getTaskById(@Param('id') id: string): taskModel {
   //   return this.tasksService.getTaskById(id);

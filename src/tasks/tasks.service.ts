@@ -1,8 +1,10 @@
+import { taskModel } from './../../dist/tasks/tasks.model.d';
 import { TasksRepository } from './task.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Task } from './task.entity';
 
 @Injectable() // injectable makes it a signleton (design pattern)
 export class TasksService {
@@ -41,15 +43,16 @@ export class TasksService {
   //   this.tasks.push(task);
   //   return task;
   // }
-  // getTaskById(id: string): taskModel {
-  //   const found = this.tasks.find((task) => task.id === id);
-  //   if (!found) {
-  //     //.... throw the errror
-  //     throw new NotFoundException(`Task with ID "${id}" not found`);
-  //     //added custom message whilee throwing the error
-  //   }
-  //   return found;
-  // }
+
+  async getTaskById(id: string): Promise<Task> {
+    const found = await this.taskRepository.findOne(id);
+    if (!found) {
+      throw new NotFoundException(`Task with ID: "${id}" not found.`);
+    }
+    return found;
+  }
+
+
   // deleteTask(id: string): void {
   //   // const index = this.tasks.findIndex((task) => task.id === id);
   //   // this.tasks.splice(index, 1);
